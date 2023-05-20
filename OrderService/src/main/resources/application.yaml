@@ -15,6 +15,19 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          uri-issuer: https://dev-75494314.okta.com/oauth2/default
+      client:
+        registration:
+          internal-client:
+            provider: okta
+            authorization-grant-type: client_credientials
+            scope: internal
+            client-id: 0oa9kesd4jYWKCdgU5d7
+            client-secret: iN8kEA48nZgr4r6kAsjIUi3lSWk5GXZXnzBNAyf6
 
 resilience4j:
   circuitbreaker:
