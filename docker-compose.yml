@@ -1,0 +1,32 @@
+version: '3'
+services:
+  serviceregistry:
+    image: 'bhuvantech/serviceregistry:0.0.1'
+    container_name: service-registry
+    ports:
+      - '8761:8761'
+  configserver:
+    image: 'bhuvantech/configserver:0.0.1'
+    container_name: config-server
+    ports:
+      - '9296:9296'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://configserver:9296/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - serviceregistry
+  cloudgateway:
+    image: 'bhuvantech/cloudgateway:0.0.1'
+    container_name: cloud-gateway
+    ports:
+      - '9090:9090'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - CONFIG_SERVER_URL=configserver
+    depends_on:
+      configserver:
+        condition: service_healthy
