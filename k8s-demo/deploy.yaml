@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-registery
+spec:
+  selector:
+    matchLabels:
+      app: service-registery
+  template:
+    metadata:
+      labels:
+        app: service-registery
+    spec:
+      containers:
+        - name: service-registry-app
+          image: bhuvantech/serviceregistry:0.0.1
+          ports:
+          - containerPort: 8761
